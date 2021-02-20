@@ -31,7 +31,7 @@ export default function Contact(){
           <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send</button>
         </div>
         <div class="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
-            <p class="leading-normal my-5">Made in Indonesia
+            <p class="leading-normal my-5">Made with love
             <br/>
           </p>
           <span class="inline-flex">
