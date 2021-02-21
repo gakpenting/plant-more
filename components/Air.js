@@ -1,8 +1,7 @@
 import react from "react";
 
 export default function Air({ country }) {
-  console.log(country);
-  async function checkAirQuality() {
+    async function checkAirQuality() {
     ///territory/countries
     // const data = await (await fetch(`https://api.aircheckr.com/street/location/${position.coords.latitude}/${position.coords.longitude}?fields=values,aqi_11,aqi_4,main_polls,comparison,recommend_sensitive,recommend_non_sensitive,poll_info`,{method: 'GET', headers: {
     //   'x-access-token': process.env.TOKEN
@@ -38,9 +37,9 @@ export default function Air({ country }) {
             <div>
               <select className="select select w-full max-w-xs">
                 <option value={""}>Select your country</option>
-                {/* {country.map((a) => (
-                  <option value={a.country}>{a.country}</option>
-                ))} */}
+                {country.map((a) => (
+                  <option key={a.id} value={a.name[0]}>{a.name[0]}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -176,20 +175,4 @@ export default function Air({ country }) {
       </section>
     </>
   );
-}
-export async function getServerSideProps() {
-  const country = await (
-    await fetch(`https://api.aircheckr.com/territory/countries`, {
-      method: "GET",
-      headers: {
-        "x-access-token": process.env.TOKEN,
-      },
-    })
-  ).json();
-console.log(country)
-  return {
-    props: {
-      country,
-    },
-  };
 }
