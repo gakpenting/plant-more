@@ -17,11 +17,13 @@ export default function Air({ country }) {
  
     return data;
   }
- const [city,setCity]=useState([]) 
+ const [airData,setAirData]=useState({status:false}) 
   async function cities(e) {
+  
     if(e.target.value==="") return;
+    const param=JSON.parse(e.target.value)
     const data = await (
-      await fetch(`https://api.aircheckr.com/territory/${e.target.value}/LAU2/names`, {
+      await fetch(`https://api.aircheckr.com/territory/${param.id}/NUTS0/name/${param.name[0]}`, {
         method: "GET",
         headers: {
           "x-access-token": process.env.TOKEN,
@@ -29,7 +31,7 @@ export default function Air({ country }) {
       })
     ).json();
  console.log(data)
-    return data;
+    setAirData(data)
   }
   return (
     <>
@@ -37,7 +39,7 @@ export default function Air({ country }) {
         <div className="container px-5 py-24 mx-auto">
           <div className="text-center mb-20">
             <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
-              Check Air Quality In Your Area
+              Check Air Quality In Your Country
             </h1>
             <p className="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto text-gray-500s">
               By checking your air quality you can now consider what's best for
@@ -46,22 +48,20 @@ export default function Air({ country }) {
             <div className="flex mt-6 justify-center">
               <div className="w-16 h-1 rounded-full bg-indigo-500 inline-flex"></div>
             </div>
-            <div>
+            <div className="mt-5">
               <select onChange={cities} className="select select w-full max-w-xs">
                 <option value={""}>Select your country</option>
                 {country.map((a) => (
-                  <option key={a.id} value={a.id}>{a.name[0]}</option>
+                  <option key={a.id} value={JSON.stringify(a)}>{a.name.join(" , ")}</option>
                 ))}
               </select>
             </div>
-            <div>
-              <select onClick={cities} className="select select w-full max-w-xs">
-                <option value={""}>Select your city</option>
-                {country.map((a) => (
-                  <option key={a.id} value={a.id}>{a.name[0]}</option>
-                ))}
-              </select>
-            </div>
+            <div className="my-5">Date Recorded:</div>
+           <div>
+           <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{airData.data?airData.data[0].dataTime.start:""}</span>
+           -
+           <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{airData.data?airData.data[0].dataTime.end:""}</span>
+           </div>
           </div>
           <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
             <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
@@ -185,12 +185,7 @@ export default function Air({ country }) {
               </div>
             </div>
           </div>
-          <button
-            onClick={checkAirQuality}
-            className="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-          >
-            Check Now
-          </button>
+        
         </div>
       </section>
     </>
