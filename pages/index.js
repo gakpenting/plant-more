@@ -5,7 +5,7 @@ import Air from "../components/Air";
 import Plant from "../components/Plant";
 import Donate from "../components/Donate";
 import Contact from "../components/Contact";
-import OpenData from "../components/OpenData";
+import OpenSource from "../components/OpenSource";
 export async function getStaticProps() {
   const country = await (
     await fetch(`https://api.aircheckr.com/territory/countries`, {
@@ -34,7 +34,7 @@ export default function Home({country}) {
       <Air country={country}/>
       <Plant />
       <Donate />
-      <OpenData />
+      <OpenSource />
       <Contact />
      
     </div>
