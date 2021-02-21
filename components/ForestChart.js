@@ -7,8 +7,8 @@ const data = [
   {quarter: 4, earnings: 19000}
 ];
 
-export default class App extends React.Component {
-  render() {
+export default function ForestChart(props) {
+  
     return (
       <VictoryChart
         // adding the material theme provided with Victory
@@ -25,8 +25,8 @@ export default class App extends React.Component {
           }}
         }
         label="Year"
-          tickValues={[1, 2, 3, 4]}
-          tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
+          tickValues={props.year}
+          tickFormat={props.year}
           
         />
         <VictoryAxis
@@ -42,12 +42,12 @@ export default class App extends React.Component {
           tickFormat={(x) => (`${x / 1000}k`)}
         />
         <VictoryBar
-          data={data}
+          data={props.data}
           x="quarter"
           y="earnings"
         />
       </VictoryChart>
-    )
-  }
+    );
+  
 }
 
