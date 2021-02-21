@@ -1,5 +1,6 @@
 import React from "react";
 import ForestChart from './ForestChart'
+import _ from 'underscore'
 const csvToJson = (str, headerList, quotechar = '"', delimiter = ',') => {
   const cutlast = (_, i, a) => i < a.length - 1;
   // const regex = /(?:[\t ]?)+("+)?(.*?)\1(?:[\t ]?)+(?:,|$)/gm; // no variable chars
@@ -23,25 +24,41 @@ const csvToJson = (str, headerList, quotechar = '"', delimiter = ',') => {
 
 export default function Map() {
   const [rows, setRows] = React.useState([])
+  const [country, setCountry] = React.useState([])
+  const [startYear, setStartYear] = React.useState([])
+  const [endYear, setEndYear] = React.useState([])
   React.useEffect(() => {
     async function getData() {
-      const response = await fetch('http://api.resourcewatch.org/v1/dataset/a4d92f66-83f4-40f9-9d70-17297ef90e63')
-      const reader = await response.json()
-      // const result = await reader.read() // raw array
-      // const decoder = new TextDecoder('utf-8')
-      // const csv = decoder.decode(result.value) // the csv text
-      // const results = csvToJson(csv) // object with { data, errors, meta }
-      // const rows = results // array of objects
-      setRows(reader)
+      const response = await fetch('/forest-area-km.csv')
+      const reader = await response.body.getReader();
+      const result = await reader.read() // raw array
+      const decoder = new TextDecoder('utf-8')
+      const csv = decoder.decode(result.value) // the csv text
+      const results = csvToJson(csv) // object with { data, errors, meta }
+      const rows = results // array of objects
+      setRows(rows)
+      const country=_
+  .chain(rows)
+  .groupBy('Entity,')
+  .map(function(value, key) {
+      return {
+          country: key,
+          year: _.pluck(value, 'Year,')
+      }
+  })
+  .value();
+  setCountry(country)
     }
     getData()
   }, [])
-console.log(rows)
+  
+  
+
   return (
     <>
       <div className="container mx-auto flex py-3 items-center justify-center flex-col">
         <h1 className="title-font sm:text-4xl text-3xl mb-2 font-medium text-gray-900">
-          Forest Loss Per Year
+          Forest Data Per Year
         </h1>
       </div>
       <div class="container mx-auto flex sm:flex-nowrap flex-wrap items-center justify-center">
@@ -66,7 +83,7 @@ console.log(rows)
           </div>
           <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
             <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">
-              Search your Country Forest Loss
+              Search your Country Forest Data
             </h2>
             <p class="leading-relaxed mb-5 text-gray-600">
               Fill in the data below
@@ -75,34 +92,29 @@ console.log(rows)
               <label for="name" class="leading-7 text-sm text-gray-600">
                 Country
               </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              />
+              <select class="select select w-full max-w-xs">
+                <option value={""}>Select your country</option>
+ {country.map(a=>(<option value={a.country}>{a.country}</option>))}
+</select>
+
             </div>
             <div class="relative mb-4">
               <label for="email" class="leading-7 text-sm text-gray-600">
                 Start Year
               </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              />
+              <select class="select select w-full max-w-xs">
+                <option value={""}>Select Start Year</option>
+ {startYear.map(a=>(<option value={a}>{a}</option>))}
+</select>
             </div>
             <div class="relative mb-4">
               <label for="email" class="leading-7 text-sm text-gray-600">
                 End Year
               </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              />
+              <select class="select select w-full max-w-xs">
+                <option value={""}>Select End Year</option>
+ {endYear.map(a=>(<option value={a}>{a}</option>))}
+</select>
             </div>
             <button class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
               Search

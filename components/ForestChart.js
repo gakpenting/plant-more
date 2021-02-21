@@ -37,9 +37,9 @@ export default class App extends React.Component {
             fontStyle: "italic"
           }}
         }
-        label="Hectar"
+        label="Kilometer"
           dependentAxis
-          tickFormat={(x) => (`$${x / 1000}k`)}
+          tickFormat={(x) => (`${x / 1000}k`)}
         />
         <VictoryBar
           data={data}

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Navbar from "../components/Navbar";
-import Map from "../components/Map";
+import Map from "../components/Charts";
 import Air from "../components/Air";
 import Plant from "../components/Plant";
 import Donate from "../components/Donate";

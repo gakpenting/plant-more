@@ -60,13 +60,13 @@ export default function Navbar(){
               global warming. Yet the damage to our rainforest is getting higher
               year by year. And without rainforest our oxygen is getting low
               year by year. Now you can help protect the earth by simple step
-              planting a plants! see below to see the data of damage done to our
-              rainforest. And some of the plants you can plant to help prevent
+              planting a plants! see below to see the data of our
+              forest. And some of the plants you can plant to help prevent
               the damage.
             </p>
             <div className="flex justify-center">
               <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                See The Damage
+                See Forest Data
               </button>
               <button className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
                 How Can You Help?
