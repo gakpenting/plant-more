@@ -1,4 +1,4 @@
-import react from "react";
+import {useState} from "react";
 
 export default function Air({ country }) {
     async function checkAirQuality() {
@@ -17,8 +17,20 @@ export default function Air({ country }) {
  
     return data;
   }
-  async function countries() {}
-  async function cities() {}
+ const [city,setCity]=useState([]) 
+  async function cities(e) {
+    if(e.target.value==="") return;
+    const data = await (
+      await fetch(`https://api.aircheckr.com/territory/${e.target.value}/LAU2/names`, {
+        method: "GET",
+        headers: {
+          "x-access-token": process.env.TOKEN,
+        },
+      })
+    ).json();
+ console.log(data)
+    return data;
+  }
   return (
     <>
       <section id="air" className="text-gray-600 body-font">
@@ -35,10 +47,18 @@ export default function Air({ country }) {
               <div className="w-16 h-1 rounded-full bg-indigo-500 inline-flex"></div>
             </div>
             <div>
-              <select className="select select w-full max-w-xs">
+              <select onChange={cities} className="select select w-full max-w-xs">
                 <option value={""}>Select your country</option>
                 {country.map((a) => (
-                  <option key={a.id} value={a.name[0]}>{a.name[0]}</option>
+                  <option key={a.id} value={a.id}>{a.name[0]}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <select onClick={cities} className="select select w-full max-w-xs">
+                <option value={""}>Select your city</option>
+                {country.map((a) => (
+                  <option key={a.id} value={a.id}>{a.name[0]}</option>
                 ))}
               </select>
             </div>
