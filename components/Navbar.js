@@ -20,12 +20,12 @@ export default function Navbar(){
             <span className="ml-3 text-xl">Plant More</span>
           </a>
           <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-            <a className="mr-5 hover:text-gray-900">Check Air Quality</a>
-            <a className="mr-5 hover:text-gray-900">Plant Now!</a>
-            <a className="mr-5 hover:text-gray-900">List Of Plant</a>
-            <a className="mr-5 hover:text-gray-900">Open Data</a>
+            <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('air').scrollIntoView()}>Check Air Quality</a>
+            <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('forest-chart').scrollIntoView()}>Forest Data</a>
+            <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('plants').scrollIntoView()}>Plant Now!</a>
+            <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('open-data').scrollIntoView()}>Open Data</a>
           </nav>
-          <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+          <button onClick={()=>document.getElementById('donate').scrollIntoView()} className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
             Donate To Non Profit
             <svg
               fill="none"
@@ -65,10 +65,10 @@ export default function Navbar(){
               the damage.
             </p>
             <div className="flex justify-center">
-              <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+              <button onClick={()=>document.getElementById('forest-chart').scrollIntoView()} className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                 See Forest Data
               </button>
-              <button className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
+              <button onClick={()=>document.getElementById('plants').scrollIntoView()} className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
                 How Can You Help?
               </button>
             </div>

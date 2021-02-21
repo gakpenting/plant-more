@@ -36,6 +36,7 @@ export default function Map() {
   const [pickEndYear, setPickEndYear] = React.useState("");
   const [error, setError] = React.useState({ state: false, message: "" });
   const [chartData, setChartData] = React.useState({ year: [], data: [] });
+  const [yearBefore, setYearBefore] = React.useState([]);
   React.useEffect(() => {
     async function getData() {
       const response = await fetch("/forest-area-km.csv");
@@ -69,7 +70,7 @@ export default function Map() {
     const countrySelect = country.filter(
       (a) => a.country === e.target.value
     )[0];
-    console.log(countrySelect)
+    
     setStartYear(countrySelect.year);
     setEndYear(countrySelect.year);
     setPickCountry(e.target.value);
@@ -115,13 +116,22 @@ export default function Map() {
         (a) =>
           a.country === pickCountry && Number(a.year) >= Number(pickStartYear) && Number(a.year) <= Number(pickEndYear)
       );
-    console.log(result);
+    setYearBefore(rows
+      .map((a) => ({
+        country: a["Entity,"],
+        year: Number(a["Year,"]),
+        area: a["Forest area"],
+      }))
+      .filter(
+        (a) =>
+          a.country === pickCountry && Number(a.year) === Number(pickStartYear)-1
+      ))
     setChartData({year:_.pluck(result,"year"),data:result})
     return ;
   }
   return (
     <>
-      <div className="container mx-auto flex py-3 items-center justify-center flex-col">
+      <div id="forest-chart" className="container mx-auto flex py-3 items-center justify-center flex-col">
         <h1 className="title-font sm:text-4xl text-3xl mb-2 font-medium text-gray-900">
           Forest Data Per Year
         </h1>
@@ -145,7 +155,7 @@ export default function Map() {
       <section class="text-gray-600 body-font relative">
         <div class="container px-5 py-5 mx-auto flex sm:flex-nowrap flex-wrap">
           <div class="lg:w-2/3 md:w-1/2 bg-gray-300 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
-            <ForestChart year={chartData.year} data={chartData.data} />
+            <ForestChart year={chartData.year} data={chartData.data} yearBefore={yearBefore} />
           </div>
           <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
             <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">

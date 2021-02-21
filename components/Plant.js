@@ -1,7 +1,7 @@
 import react from 'react'
 export default function Plant(){
     return (<>
-    <div className="container mx-auto flex py-3 items-center justify-center flex-col">
+    <div id="plants" className="container mx-auto flex py-3 items-center justify-center flex-col">
     <h1 className="title-font sm:text-4xl text-3xl mb-2 font-medium text-gray-900">
       Type Of Plants You Can Plant
     </h1>
