@@ -1,11 +1,6 @@
 import React from 'react'
 import {VictoryChart,VictoryAxis,VictoryBar,VictoryTheme} from 'victory'
-const data = [
-  {quarter: 1, earnings: 13000},
-  {quarter: 2, earnings: 16500},
-  {quarter: 3, earnings: 14250},
-  {quarter: 4, earnings: 19000}
-];
+
 
 export default function ForestChart(props) {
   
@@ -13,15 +8,18 @@ export default function ForestChart(props) {
       <VictoryChart
         // adding the material theme provided with Victory
         theme={VictoryTheme.material}
-        domainPadding={30}
-        height={280}
+
+        
+      
       >
         <VictoryAxis
         style={{
           axisLabel: {
-              padding: 36,
+              padding: 37,
             fontSize: 15,
             fontStyle: "italic"
+          },tickLabels:{
+            angle: -45
           }}
         }
         label="Year"
@@ -35,16 +33,20 @@ export default function ForestChart(props) {
               padding: 36,
             fontSize: 15,
             fontStyle: "italic"
-          }}
+          },
+          tickLabels:{
+            fontSize:9
+          }
+        }
         }
         label="Kilometer"
           dependentAxis
-          tickFormat={(x) => (`${x / 1000}k`)}
+          tickFormat={(x) => (`${x>1000?(x / 1000).toFixed()+"k":x}`)}
         />
         <VictoryBar
           data={props.data}
-          x="quarter"
-          y="earnings"
+          x="year"
+          y="area"
         />
       </VictoryChart>
     );
