@@ -8,9 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "daisyui": "^0.11.4",
+    "dotenv": "^8.2.0",
     "next": "10.0.7",
+    "node-fetch": "^2.6.1",
     "react": "17.0.1",
+    "react-autosuggest": "^10.1.0",
     "react-dom": "17.0.1",
     "swr": "^0.4.2",
     "underscore": "^1.12.0",

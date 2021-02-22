@@ -23,7 +23,7 @@ export default function Navbar(){
             <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('air').scrollIntoView()}>Check Air Quality</a>
             <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('forest-chart').scrollIntoView()}>Forest Data</a>
             <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('plants').scrollIntoView()}>Plant Now!</a>
-            <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('open-data').scrollIntoView()}>Open Data</a>
+            <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('open-data').scrollIntoView()}>Open Source</a>
           </nav>
           <button onClick={()=>document.getElementById('donate').scrollIntoView()} className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
             Donate To Non Profit
