@@ -31,19 +31,7 @@ function compressBody(body) {
     });
 
 }
-let compressedBody = JSON.stringify([
-    {
-      "eventType":"Purchase",
-      "account":3,
-      "amount":259.54
-    },
-    {
-      "eventType":"Purchase",
-      "account":5,
-      "amount":12309,
-      "product":"Item"
-    }
-  ]);
+let compressedBody = JSON.stringify([{"eventType":"Contact","name":"sadsa","email":"","message":"dsada"}]);
 
 let headers = new Headers();
 headers.append("Content-Type","application/json");
