@@ -1,8 +1,12 @@
-# URL
+# DEMO URL
 
 ```
 https://plant-more.vercel.app/
 ```
+
+# SEE THE EXPLANATION HERE
+
+https://www.therelicans.com/spiritbro1/let-s-make-our-planet-cool-again-with-plant-more-27ef
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
