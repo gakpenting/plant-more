@@ -1,14 +1,38 @@
 import { useState, useEffect } from "react";
-
+import sendEvent from "./utils/send_event";
 export default function PlantDetail({ plant }) {
   const [data, setData] = useState({});
   async function searchPlant() {
-    const _data = await (
-      await fetch(`/api/plants?plant=${plant}`, {
-        method: "GET",
-      })
-    ).json();
-    setData(_data.data);
+    try {
+      const _data = await (
+        await fetch(`/api/plants?plant=${plant}`, {
+          method: "GET",
+        })
+      ).json();
+      setData(_data.data);
+      sendEvent([
+        {
+          eventType: "Successful",
+          path: `/api/plants?plant=${plant}`,
+          form: "plant_detail",
+        },
+      ]).then((a) => console.log(a));
+      sendEvent([
+        {
+          eventType: "Plant",
+          plant: _data.data.common_name,
+        },
+      ]).then((a) => console.log(a));
+    } catch (e) {
+      const res = sendEvent([
+        {
+          eventType: "ErrorEvent",
+          path: `/api/plants?plant=${plant}`,
+          form: "plant_detail",
+          error: e.message,
+        },
+      ]).then((a) => console.log(a));
+    }
   }
   useEffect(() => {
     searchPlant();
@@ -27,7 +51,6 @@ export default function PlantDetail({ plant }) {
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
               {data.common_name}
             </h1>
-            
           </div>
           <div className="flex flex-wrap -m-4">
             <div className="p-4 lg:w-30">
@@ -66,7 +89,7 @@ export default function PlantDetail({ plant }) {
                   Growth Habit
                 </h2>
                 <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">
-                  {data.specifications.growth_habit}
+                  {data.specifications?.growth_habit}
                 </h1>
               </div>
             </div>
@@ -76,7 +99,7 @@ export default function PlantDetail({ plant }) {
                   Edible
                 </h2>
                 <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">
-                  {data.edible?"yes":"no"}
+                  {data.edible ? "yes" : "no"}
                 </h1>
               </div>
             </div>

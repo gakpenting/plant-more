@@ -5,29 +5,36 @@ export default function Contact() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [disabled, setDisabled] = useState(false);
+
   function closeMessage() {
     setError({ state: false, message: error.message });
   }
   async function send() {
+    setDisabled(true);
     if (name.trim() === "" && email.trim() === "") {
       setError({
         state: true,
         message: "at least email or name shouldn't be empty",
       });
+      setDisabled(false);
       return;
     }
     if (message.trim() === "") {
       setError({ state: true, message: "message shouldn't be empty" });
+      setDisabled(false);
       return;
     }
     const res = await sendEvent([{ eventType: "Contact", name, email, message }]);
     if (!res.success) {
       setError({ state: true, message: "there is an error sending message" });
+      setDisabled(false);
       return;
     } else {
       setMessage("");
       setName("");
       setEmail("");
+      setDisabled(false);
       closeMessage();
     }
   }
@@ -72,6 +79,7 @@ export default function Contact() {
                     Name
                   </label>
                   <input
+                  disabled={disabled}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     type="text"
@@ -90,6 +98,7 @@ export default function Contact() {
                     Email
                   </label>
                   <input
+                  disabled={disabled}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     type="email"
@@ -108,6 +117,7 @@ export default function Contact() {
                     Message
                   </label>
                   <textarea
+                  disabled={disabled}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     id="message"
@@ -118,6 +128,7 @@ export default function Contact() {
               </div>
               <div className="p-2 w-full">
                 <button
+                disabled={disabled}
                   onClick={send}
                   className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
                 >

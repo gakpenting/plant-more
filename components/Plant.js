@@ -1,6 +1,7 @@
 import { useState } from "react";
 import plants from "../public/plants.json";
 import Autosuggest from "react-autosuggest";
+import sendEvent from "./utils/send_event";
 export default function Plant() {
   const [country, setCountry] = useState("");
   const [value, setValue] = useState("");
@@ -57,7 +58,31 @@ export default function Plant() {
       ).json();
       console.log(data);
       setListPlants(data);
+     sendEvent([
+        {
+          eventType: "Successful",
+          path: `/api/plants?slug=${plant.slug}`,
+          form: "plant",
+         
+        },
+      ]).then((a) => console.log(a));
+       sendEvent([
+        {
+          eventType: "PlantSearch",
+          country: plant.name
+          
+         
+        },
+      ]).then((a) => console.log(a));
     } catch (e) {
+      const res = sendEvent([
+        {
+          eventType: "ErrorEvent",
+          path: url,
+          form: "plant",
+          error: e.message,
+        },
+      ]).then((a) => console.log(a));
       console.log(e);
     }
   }

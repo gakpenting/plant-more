@@ -1,6 +1,7 @@
 import React from "react";
 import ForestChart from "./ForestChart";
 import _ from "underscore";
+import sendEvent from "./utils/send_event";
 const csvToJson = (str, headerList, quotechar = '"', delimiter = ",") => {
   const cutlast = (_, i, a) => i < a.length - 1;
   // const regex = /(?:[\t ]?)+("+)?(.*?)\1(?:[\t ]?)+(?:,|$)/gm; // no variable chars
@@ -131,6 +132,14 @@ export default function Map() {
             Number(a.year) === Number(pickStartYear) - 1
         )
     );
+    const res = sendEvent([
+      {
+        eventType: "Country",
+        country: pickCountry,
+        start_year: pickStartYear,
+        end_year: pickEndYear,
+      },
+    ]).then((a) => console.log(a));
     setChartData({ year: _.pluck(result, "year"), data: result });
     return;
   }
