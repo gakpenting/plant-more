@@ -13,10 +13,20 @@ export default async (req, res) => {
         }
       )
     ).json();
-  }else{
+  }else if(req.query.plant){
     json = await (
       await fetch(
         `https://trefle.io/api/v1/species/${req.query.plant}?token=${process.env.PLANT_TOKEN}`,
+        {
+          method: "GET",
+        }
+      )
+    ).json();
+  }else if(req.body){
+  
+    json = await (
+      await fetch(
+        `https://trefle.io${req.body}&token=${process.env.PLANT_TOKEN}`,
         {
           method: "GET",
         }

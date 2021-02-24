@@ -3,7 +3,7 @@ import plants from "../public/plants.json";
 import Autosuggest from "react-autosuggest";
 import sendEvent from "./utils/send_event";
 export default function Plant() {
-  const [country, setCountry] = useState("");
+  const [disabled, setDisabled] = useState(false);
   const [value, setValue] = useState("");
   const [suggestions, setSuggestion] = useState([]);
   const [plant, setPlant] = useState({});
@@ -51,6 +51,7 @@ export default function Plant() {
   const [listPlants, setListPlants] = useState([]);
   async function searchPlant() {
     try {
+      setDisabled(true);
       const data = await (
         await fetch(`/api/plants?slug=${plant.slug}`, {
           method: "GET",
@@ -58,27 +59,67 @@ export default function Plant() {
       ).json();
       console.log(data);
       setListPlants(data);
-     sendEvent([
+      sendEvent([
         {
           eventType: "Successful",
           path: `/api/plants?slug=${plant.slug}`,
           form: "plant",
-         
         },
       ]).then((a) => console.log(a));
-       sendEvent([
+      sendEvent([
         {
           eventType: "PlantSearch",
-          country: plant.name
-          
-         
+          country: plant.name,
         },
       ]).then((a) => console.log(a));
+      setDisabled(false);
     } catch (e) {
+      setDisabled(false);
       const res = sendEvent([
         {
           eventType: "ErrorEvent",
-          path: url,
+          path: `/api/plants?slug=${plant.slug}`,
+          form: "plant",
+          error: e.message,
+        },
+      ]).then((a) => console.log(a));
+      console.log(e);
+    }
+  }
+  async function paginationPlant(url) {
+    setDisabled(true);
+    try {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      const data = await (
+        await fetch(`/api/plants`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(url),
+        })
+      ).json();
+      console.log(data);
+      setListPlants(data);
+      setDisabled(false);
+      sendEvent([
+        {
+          eventType: "Successful",
+          path: `/api/plants`,
+          form: "plant",
+        },
+      ]).then((a) => console.log(a));
+      sendEvent([
+        {
+          eventType: "PlantSearch",
+          country: plant.name,
+        },
+      ]).then((a) => console.log(a));
+    } catch (e) {
+      setDisabled(false);
+      const res = sendEvent([
+        {
+          eventType: "ErrorEvent",
+          path: `/api/plants`,
           form: "plant",
           error: e.message,
         },
@@ -114,6 +155,7 @@ export default function Plant() {
           />
         </div>
         <button
+          disabled={disabled}
           onClick={searchPlant}
           className="flex mx-auto mt-2 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
         >
@@ -123,30 +165,69 @@ export default function Plant() {
       <div className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap -m-4">
-            {listPlants?.data?.map(a=>( <div key={a.slug} className="p-4 md:w-1/3">
-              <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                <img
-                  className="lg:h-48 md:h-36 w-full object-cover object-center"
-                  src={a.image_url}
-                  
-                />
-                <div className="p-6">
-                  <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
-                    {a.rank}
-                  </h2>
-                  <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
-                    {a.common_name}
-                  </h1>
-                  <a href={`/plant_detail?plant=${a.slug}`} target="_blank" className="cursor-pointer text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
-                <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14"></path>
-                  <path d="M12 5l7 7-7 7"></path>
-                </svg>
-              </a>
+            {listPlants?.data?.map((a) => (
+              <div key={a.slug} className="p-4 md:w-1/3">
+                <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+                  <img
+                    className="lg:h-48 md:h-36 w-full object-cover object-center"
+                    src={a.image_url}
+                  />
+                  <div className="p-6">
+                    <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+                      {a.scientific_name}
+                    </h2>
+                    <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
+                      {a.common_name}
+                    </h1>
+                    <a
+                      href={`/plant_detail?plant=${a.slug}`}
+                      target="_blank"
+                      className="cursor-pointer text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0"
+                    >
+                      Learn More
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>))}
-           
+            ))}
+            <div className="container mx-auto flex py-3 items-center justify-center flex-col">
+              <div
+                className="btn-group "
+                style={{
+                  visibility:
+                    listPlants?.links?.next || listPlants?.links?.prev
+                      ? "visible"
+                      : "hidden",
+                }}
+              >
+                <button
+                  onClick={() => paginationPlant(listPlants?.links?.prev)}
+                  className="btn btn-outline btn-wide"
+                  disabled={listPlants?.links?.prev && !disabled ? false : true}
+                >
+                  Previous Page
+                </button>
+                <button
+                  onClick={() => paginationPlant(listPlants?.links?.next)}
+                  className="btn btn-outline btn-wide"
+                  disabled={listPlants?.links?.next && !disabled ? false : true}
+                >
+                  Next Page
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
