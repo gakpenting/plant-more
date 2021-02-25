@@ -70,7 +70,7 @@ export default function Map({countries}) {
       return;
     }
     setError({ state: false, message: "" });
-    const result = rows
+    const result = countries
       .map((a) => ({
         country: a["Entity,"],
         year: Number(a["Year,"]),
@@ -83,7 +83,7 @@ export default function Map({countries}) {
           Number(a.year) <= Number(pickEndYear)
       );
     setYearBefore(
-      rows
+      countries
         .map((a) => ({
           country: a["Entity,"],
           year: Number(a["Year,"]),
