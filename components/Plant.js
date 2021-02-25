@@ -2,6 +2,7 @@ import { useState } from "react";
 import plants from "../public/plants.json";
 import Autosuggest from "react-autosuggest";
 import sendEvent from "./utils/send_event";
+import _ from 'underscore'
 export default function Plant() {
   const [disabled, setDisabled] = useState(false);
   const [value, setValue] = useState("");
@@ -165,7 +166,7 @@ export default function Plant() {
       <div className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap -m-4">
-            {listPlants?.data?.map((a) => (
+            {_.uniq(listPlants?.data, 'id').map((a) => (
               <div key={a.slug} className="p-4 md:w-1/3">
                 <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                   <img
