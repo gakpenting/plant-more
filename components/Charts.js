@@ -2,34 +2,9 @@ import React from "react";
 import ForestChart from "./ForestChart";
 import _ from "underscore";
 import sendEvent from "./utils/send_event";
-const csvToJson = (str, headerList, quotechar = '"', delimiter = ",") => {
-  const cutlast = (_, i, a) => i < a.length - 1;
-  // const regex = /(?:[\t ]?)+("+)?(.*?)\1(?:[\t ]?)+(?:,|$)/gm; // no variable chars
-  const regex = new RegExp(
-    `(?:[\\t ]?)+(${quotechar}+)?(.*?)\\1(?:[\\t ]?)+(?:${delimiter}|$)`,
-    "gm"
-  );
-  const lines = str.toString().split("\n");
-  const headers =
-    headerList || lines.splice(0, 1)[0].match(regex).filter(cutlast);
 
-  const list = [];
 
-  for (const line of lines) {
-    const val = {};
-    for (const [i, m] of [...line.matchAll(regex)].filter(cutlast).entries()) {
-      // Attempt to convert to Number if possible, also use null if blank
-      val[headers[i]] = m[2].length > 0 ? Number(m[2]) || m[2] : null;
-    }
-    list.push(val);
-  }
-
-  return list;
-};
-
-export default function Map() {
-  const [rows, setRows] = React.useState([]);
-  const [country, setCountry] = React.useState([]);
+export default function Map({countries}) {
   const [startYear, setStartYear] = React.useState([]);
   const [endYear, setEndYear] = React.useState([]);
   const [pickCountry, setPickCountry] = React.useState("");
@@ -38,20 +13,7 @@ export default function Map() {
   const [error, setError] = React.useState({ state: false, message: "" });
   const [chartData, setChartData] = React.useState({ year: [], data: [] });
   const [yearBefore, setYearBefore] = React.useState([]);
-  React.useEffect(() => {
-    async function getData() {
-      const headers = new Headers();
-        headers.append('pragma', 'no-cache');
-headers.append('cache-control', 'no-cache');
-      const response = await fetch("/forest-area-km.csv",{headers});
-      const reader = await response.body.getReader();
-      const result = await reader.read(); // raw array
-      const decoder = new TextDecoder("utf-8");
-      const csv = decoder.decode(result.value); // the csv text
-      const results = csvToJson(csv); // object with { data, errors, meta }
-      const rows = results; // array of objects
-      setRows(rows);
-            const country = _.chain(rows)
+             const country = _.chain(countries)
         .groupBy("Entity,")
         .map(function (value, key) {
           return {
@@ -60,10 +22,8 @@ headers.append('cache-control', 'no-cache');
           };
         })
         .value();
-      setCountry(country);
-    }
-    getData();
-  }, []);
+  
+ 
   function handleChange(e) {
     if (e.target.value.trim() === "") {
       setStartYear([]);
