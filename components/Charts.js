@@ -40,7 +40,10 @@ export default function Map() {
   const [yearBefore, setYearBefore] = React.useState([]);
   React.useEffect(() => {
     async function getData() {
-      const response = await fetch("/forest-area-km.csv");
+      const headers = new Headers();
+        headers.append('pragma', 'no-cache');
+headers.append('cache-control', 'no-cache');
+      const response = await fetch("/forest-area-km.csv",{headers});
       const reader = await response.body.getReader();
       const result = await reader.read(); // raw array
       const decoder = new TextDecoder("utf-8");
@@ -48,7 +51,7 @@ export default function Map() {
       const results = csvToJson(csv); // object with { data, errors, meta }
       const rows = results; // array of objects
       setRows(rows);
-      const country = _.chain(rows)
+            const country = _.chain(rows)
         .groupBy("Entity,")
         .map(function (value, key) {
           return {
