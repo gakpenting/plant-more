@@ -16,3 +16,22 @@ body:JSON.stringify(eventData)
       console.log(e);
     }
   }
+
+  export async function sendQuery(query) {
+    try {
+      const headers = new Headers();
+headers.append('Content-Type', 'application/json');
+
+      const data = await (
+        await fetch(`/api/graphql`, {
+          method: "POST",
+          headers,
+body:JSON.stringify(query)
+        })
+      ).json();
+      return data;
+      
+    } catch (e) {
+      console.log(e);
+    }
+  }

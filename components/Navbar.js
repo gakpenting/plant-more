@@ -26,7 +26,7 @@ export default function Navbar(){
             <a className="mr-5 hover:text-gray-900 cursor-pointer" onClick={()=>document.getElementById('open-data').scrollIntoView()}>Open Source</a>
           </nav>
           <button onClick={()=>document.getElementById('donate').scrollIntoView()} className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-            Donate To Non Profit
+            Donate 
             <svg
               fill="none"
               stroke="currentColor"
@@ -46,7 +46,7 @@ export default function Navbar(){
           <img
             className="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded"
             alt="hero"
-            src="https://source.unsplash.com/720x600/?plant"
+            src="https://images.unsplash.com/photo-1614223971553-03f27919b97b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MXwxfDB8MXxyYW5kb218fHx8fHx8fA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=720"
           />
           <div className="text-center lg:w-2/3 w-full">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">

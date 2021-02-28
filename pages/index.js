@@ -6,6 +6,7 @@ import Plant from "../components/Plant";
 import Donate from "../components/Donate";
 import Contact from "../components/Contact";
 import OpenSource from "../components/OpenSource";
+import PlantEvents from "../components/PlantEvents";
 const csvToJson = (str, headerList, quotechar = '"', delimiter = ",") => {
   const cutlast = (_, i, a) => i < a.length - 1;
   // const regex = /(?:[\t ]?)+("+)?(.*?)\1(?:[\t ]?)+(?:,|$)/gm; // no variable chars
@@ -40,11 +41,12 @@ headers.append('cache-control', 'no-cache');
   const rows = results; // array of objects
  
   return {
-    props: {countries:rows}, // will be passed to the page component as props
+    props: {countries:rows,map:process.env.MAP,accountId:process.env.USER_ID}, // will be passed to the page component as props
   }
 }
 
-export default function Home({countries}) {
+export default function Home({countries,map,accountId}) {
+ 
   return (
     <div>
       <Head>
@@ -52,9 +54,10 @@ export default function Home({countries}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Map countries={countries}/>
+      <Map countries={countries} />
       <Air />
       <Plant />
+      <PlantEvents mapToken={map} accountId={accountId}/>
       <Donate />
       <OpenSource />
       <Contact />
