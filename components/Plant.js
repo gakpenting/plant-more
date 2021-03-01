@@ -2,6 +2,7 @@ import { useState } from "react";
 import plants from "../public/plants.json";
 import Autosuggest from "react-autosuggest";
 import sendEvent from "./utils/send_event";
+import {Img} from 'react-image'
 import _ from 'underscore'
 export default function Plant() {
   const [disabled, setDisabled] = useState(false);
@@ -169,9 +170,9 @@ export default function Plant() {
             {_.uniq(listPlants?.data, 'id').map((a) => (
               <div key={a.slug} className="p-4 md:w-1/3">
                 <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                  <img
+                  <Img
                     className="lg:h-48 md:h-36 w-full object-cover object-center"
-                    src={a.image_url}
+                    src={[a.image_url,"https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_1280.jpg"]}
                   />
                   <div className="p-6">
                     <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">

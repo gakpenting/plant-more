@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import sendEvent from "./utils/send_event";
+import {Img} from 'react-image'
 export default function PlantDetail({ plant }) {
   const [data, setData] = useState({});
   async function searchPlant() {
@@ -42,10 +43,10 @@ export default function PlantDetail({ plant }) {
     <>
       <div className="text-gray-600 body-font">
         <div className="container mx-auto flex py-3 items-center justify-center flex-col">
-          <img
+          <Img
             className="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded"
             alt="hero"
-            src={data.image_url}
+            src={[data.image_url,"https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_1280.jpg"]}
           />
           <div className="text-center lg:w-2/3 w-full">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
